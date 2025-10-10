@@ -1,4 +1,4 @@
-# AB State Machine
+# AB State machine
 
 A Kotlin-based implementation of a state machine designed to simulate and validate string patterns.
 

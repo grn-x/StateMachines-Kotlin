@@ -1,3 +1,5 @@
+package machine
+
 /**
  * Abstract base class for states to define the design pattern being implemented in each state.
  */

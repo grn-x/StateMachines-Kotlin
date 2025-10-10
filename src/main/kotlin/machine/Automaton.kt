@@ -1,3 +1,5 @@
+package machine
+
 /**
  * Generic automaton that keeps the current state and tests an input word.
  */
