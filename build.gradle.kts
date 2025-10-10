@@ -22,7 +22,13 @@ dependencies {
     // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
     testImplementation(kotlin("test"))
+    sourceSets {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation(kotlin("test-junit5"))
 
+        }
+    }
 }
 
 tasks.test {

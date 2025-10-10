@@ -14,7 +14,7 @@ class Automaton(private val startState: State) {
      * @return last state's [State.isAccepting] property:
      * true if the word is accepted, otherwise false
      */
-    fun isInputAccepted(word: String): Boolean {
+    fun accepts(word: String): Boolean {
         var current = startState
         for (c in word) {
             current = current.handle(c)

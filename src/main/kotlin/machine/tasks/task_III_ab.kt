@@ -32,4 +32,4 @@ private object Z_INVALID : State() {
 }
 
 
-fun buildAThenBEverytimeAutomaton(): Automaton = Automaton(Z_BASE)
+fun buildAThenBAutomaton(): Automaton = Automaton(Z_BASE)

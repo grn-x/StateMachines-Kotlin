@@ -77,3 +77,5 @@ private object X_INVALID : State() {
     override fun handle(ch: Char): State = X_INVALID
     override val isAccepting: Boolean = false
 }
+
+fun buildA0BMod3Automaton(): machine.Automaton = machine.Automaton(X_START)

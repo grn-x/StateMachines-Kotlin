@@ -60,3 +60,5 @@ private object Z_ACCEPT : State() { // final accepting state
     override fun handle(ch: Char): State = Z_ACCEPT
     override val isAccepting: Boolean = true
 }
+
+fun buildThreeAOrBInARowAutomaton(): Automaton = Automaton(Z_Unseen)
