@@ -1,35 +1,34 @@
 package machine.tasks
-import machine.*
+
+import machine_reflectable.State as R_State
 
 /**
  * Every 'a' in the string must be immediately followed by 'b'.
- *      BASE: normal state (accepting), transition to AWAIT_B on 'a'
- *      AWAIT_B: previous char was 'a', if next is 'b' cycle back to BASE, invalid otherwise
- *      INVALID: violation (non-accepting), loops to itself
+ *      R_BASE: normal state (accepting), transition to R_AWAIT_B on 'a'
+ *      R_AWAIT_B: previous char was 'a', if next is 'b' cycle back to R_BASE, invalid otherwise
+ *      R_INVALID: violation (non-accepting), loops to itself
  */
-private object Z_BASE : State() {
-    override fun handle(ch: Char): State = when (ch) {
-        'a' -> Z_AWAIT_B
-        'b' -> Z_BASE
-        else -> Z_INVALID
-    }
-    override val isAccepting: Boolean = true
-}
+private object R_BASE : R_State(
+    transitions = mapOf(
+        'a' to { R_AWAIT_B },
+        'b' to { R_BASE }
+    ),
+    elseNext = { R_INVALID },
+    isAccepting = true
+)
 
+private object R_AWAIT_B : R_State(
+    transitions = mapOf(
+        'b' to { R_BASE }
+    ),
+    elseNext = { R_INVALID },
+    isAccepting = false
+)
 
-private object Z_AWAIT_B : State() {
-    override fun handle(ch: Char): State = when (ch) {
-        'b' -> Z_BASE
-        else -> Z_INVALID
-    }
-    override val isAccepting: Boolean = false
-}
+private object R_INVALID : R_State(
+    transitions = emptyMap(),
+    elseNext = { R_INVALID },
+    isAccepting = false
+)
 
-
-private object Z_INVALID : State() {
-    override fun handle(ch: Char): State = Z_INVALID
-    override val isAccepting: Boolean = false
-}
-
-
-fun buildAThenBAutomaton(): Automaton = Automaton(Z_BASE)
+fun r_buildAThenBAutomaton(): machine_reflectable.Automaton = machine_reflectable.Automaton(R_BASE)

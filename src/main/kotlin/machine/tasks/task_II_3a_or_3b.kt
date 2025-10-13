@@ -1,64 +1,61 @@
 package machine.tasks
-import machine.*
+
+import machine_reflectable.State as R_State
 
 /**
  * Accepts whenever there is a run of 3 'a' or 3 'b' in a row
  * States track the last character and number of occurrences
  * After streak of 3, stay in final state
  */
-private object Z_Unseen : State() { // base state, no occurrence yet
-    override fun handle(ch: Char): State = when (ch) {
-        'a' -> Z_A1
-        'b' -> Z_B1
-        else -> Z_Unseen
-    }
-    override val isAccepting: Boolean = false
-}
+private object R_Unseen : R_State(
+    transitions = mapOf(
+        'a' to { R_A1 },
+        'b' to { R_B1 }
+    ),
+    elseNext = { R_Unseen },
+    isAccepting = false
+)
 
+private object R_A1 : R_State(
+    transitions = mapOf(
+        'a' to { R_A2 },
+        'b' to { R_B1 }
+    ),
+    elseNext = { R_Unseen },
+    isAccepting = false
+)
 
-private object Z_A1 : State() { // last char a, count = 1
-    override fun handle(ch: Char): State = when (ch) {
-        'a' -> Z_A2
-        'b' -> Z_B1
-        else -> Z_Unseen
-    }
-    override val isAccepting: Boolean = false
-}
+private object R_A2 : R_State(
+    transitions = mapOf(
+        'a' to { R_ACCEPT },
+        'b' to { R_B1 }
+    ),
+    elseNext = { R_Unseen },
+    isAccepting = false
+)
 
+private object R_B1 : R_State(
+    transitions = mapOf(
+        'b' to { R_B2 },
+        'a' to { R_A1 }
+    ),
+    elseNext = { R_Unseen },
+    isAccepting = false
+)
 
-private object Z_A2 : State() { // last two are aa
-    override fun handle(ch: Char): State = when (ch) {
-        'a' -> Z_ACCEPT // third a -> accept
-        'b' -> Z_B1
-        else -> Z_Unseen
-    }
-    override val isAccepting: Boolean = false
-}
+private object R_B2 : R_State(
+    transitions = mapOf(
+        'b' to { R_ACCEPT },
+        'a' to { R_A1 }
+    ),
+    elseNext = { R_Unseen },
+    isAccepting = false
+)
 
+private object R_ACCEPT : R_State(
+    transitions = emptyMap(),
+    elseNext = { R_ACCEPT },
+    isAccepting = true
+)
 
-private object Z_B1 : State() { // last char b, count = 1
-    override fun handle(ch: Char): State = when (ch) {
-        'b' -> Z_B2
-        'a' -> Z_A1
-        else -> Z_Unseen
-    }
-    override val isAccepting: Boolean = false
-}
-
-
-private object Z_B2 : State() { // last two are bb
-    override fun handle(ch: Char): State = when (ch) {
-        'b' -> Z_ACCEPT
-        'a' -> Z_A1
-        else -> Z_Unseen
-    }
-    override val isAccepting: Boolean = false
-}
-
-
-private object Z_ACCEPT : State() { // final accepting state
-    override fun handle(ch: Char): State = Z_ACCEPT
-    override val isAccepting: Boolean = true
-}
-
-fun buildThreeAOrBInARowAutomaton(): Automaton = Automaton(Z_Unseen)
+fun r_buildThreeAOrBInARowAutomaton(): machine_reflectable.Automaton = machine_reflectable.Automaton(R_Unseen)

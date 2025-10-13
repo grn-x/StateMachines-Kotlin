@@ -1,10 +1,10 @@
-package machine.tests
+package machine_reflectable.tests
 
-import machine.Automaton
-import machine.tasks.*
-import machine_reflectable.tasks.buildA0BMod3Automaton
-import machine_reflectable.tasks.buildAThenBAutomaton
-import machine_reflectable.tasks.buildThreeAOrBInARowAutomaton
+import machine.tasks.r_buildA0BMod3Automaton
+import machine.tasks.r_buildAThenBAutomaton
+import machine.tasks.r_buildThreeAOrBInARowAutomaton
+import machine_reflectable.Automaton
+import machine_reflectable.tasks.*
 
 //import  org.junit.jupiter.api.Test
 //import org.junit.jupiter.api.Assertions.assertEquals
@@ -34,7 +34,7 @@ class AutomatonTests {
 
         @Test
         fun `accepts strings ending with two b's`() {
-            val a = buildBBAutomaton()
+            val a = r_buildBBAutomaton()
 
             val accepted = listOf(
                 "bb",
@@ -67,7 +67,7 @@ class AutomatonTests {
 
         @Test
         fun `accepts strings with at least three a's or b's in a row`() {
-            val a = buildThreeAOrBInARowAutomaton()
+            val a = r_buildThreeAOrBInARowAutomaton()
 
             val accepted = listOf(
                 "aaa",
@@ -101,7 +101,7 @@ class AutomatonTests {
 
         @Test
         fun `accepts strings where every a is followed by b`() {
-            val a = buildAThenBAutomaton()
+            val a = r_buildAThenBAutomaton()
 
             val accepted = listOf(
                 "",
@@ -133,7 +133,7 @@ class AutomatonTests {
 
         @Test
         fun `accepts strings starting with a, ending with b, and length divisible by 3`() {
-            val a = buildA0BMod3Automaton()
+            val a = r_buildA0BMod3Automaton()
 
             val accepted = listOf(
                 "aab",
