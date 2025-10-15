@@ -1,10 +1,10 @@
 package machine_reflectable.tests
 
-import machine.tasks.r_buildA0BMod3Automaton
-import machine.tasks.r_buildAThenBAutomaton
-import machine.tasks.r_buildThreeAOrBInARowAutomaton
-import machine_reflectable.Automaton
-import machine_reflectable.tasks.*
+import machine_reflectable.shared.tasks.task_I_bb.r_buildBBAutomaton
+import machine_reflectable.shared.tasks.task_II_3a_or_3b.r_buildThreeAOrBInARowAutomaton
+import machine_reflectable.shared.tasks.task_III_ab.r_buildAThenBAutomaton
+import machine_reflectable.shared.tasks.task_IV_a0b_mod3.r_buildA0BMod3Automaton
+import machine_reflectable.shared.Automaton
 
 //import  org.junit.jupiter.api.Test
 //import org.junit.jupiter.api.Assertions.assertEquals
@@ -15,7 +15,7 @@ import kotlin.test.*
 /**
  * Unit tests for automaton tasks
  *
- * Beware of the difference between assertTrue/False and assertEquals(true/false,...)!
+ * Beware of the difference between assertTrue/False and assertEquals(true/false,...)
  */
 class AutomatonTests {
 

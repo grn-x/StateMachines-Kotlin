@@ -1,5 +1,6 @@
 package machine_reflectable.tests
-import machine_reflectable.*
+import machine_reflectable.shared.Automaton
+import machine_reflectable.shared.State
 
 
 import org.junit.jupiter.api.Assertions.*
@@ -92,6 +93,8 @@ class ReflectionTests {
 
     @TestFactory
     fun `traverse extracts expected state content (per-state subtests)`(): List<DynamicTest> {
+        //automaton.printStateTree(maxCount=1);
+
         val captured = mutableMapOf<String, CapturedState>()
 
         automaton.traverse(Z0) { state, name, transitions, elseState ->

@@ -2,9 +2,6 @@ package machine.tests
 
 import machine.Automaton
 import machine.tasks.*
-import machine_reflectable.tasks.buildA0BMod3Automaton
-import machine_reflectable.tasks.buildAThenBAutomaton
-import machine_reflectable.tasks.buildThreeAOrBInARowAutomaton
 
 //import  org.junit.jupiter.api.Test
 //import org.junit.jupiter.api.Assertions.assertEquals

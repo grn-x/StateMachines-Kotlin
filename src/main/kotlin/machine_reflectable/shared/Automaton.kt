@@ -1,14 +1,13 @@
-package machine_reflectable
-import machine_reflectable.State
+package machine_reflectable.shared
 import java.lang.System.out
-import kotlin.reflect.full.*
+
 
 /**
  * Represents a finite state automaton with a starting state and some logic to process input words.
  *
  * @property startState The initial state of the automaton passed to the class constructor
  */
-class Automaton(private val startState: State) {
+class Automaton(public val startState: State) {//change from private to public to access automaton.startState in app
 
     /**
      * Check whether the input word is accepted by the automaton
@@ -51,8 +50,24 @@ class Automaton(private val startState: State) {
 
             // reflectively get name, transitions and elseNext (latter accessible directly) // TODO
             val name = current::class.simpleName ?: "UnnamedState"
+
             val transitions = current.transitions.mapValues { (_, nextFn) -> nextFn() }
             val elseState = current.elseNext?.invoke()
+
+
+            /*
+            val transitionsProp = current::class.declaredMemberProperties.first { it.name == "transitions" }
+            transitionsProp.isAccessible = true
+            //val transitions = (transitionsProp.get(current) as Map<Char, () -> State>).mapValues { (_, nextFn) -> nextFn() }
+            val transitions = (transitionsProp.getter.call(current) as Map<Char, () -> State>).mapValues { (_, nextFn) -> nextFn() }
+
+            val elseNextProp = current::class.declaredMemberProperties.first { it.name == "elseNext" }
+            elseNextProp.isAccessible = true
+            //val elseStateFn = elseNextProp.get(current) as (() -> State)?
+            val elseStateFn = elseNextProp.getter.call(current) as (() -> State)?
+            val elseState = elseStateFn?.invoke()
+            */
+
 
             onVisit(current, name, transitions, elseState)
 
@@ -65,13 +80,39 @@ class Automaton(private val startState: State) {
             }
         }
     }
-    fun printTransitions(state:State, name:String, transitions:Map<Char, State>, elseState:State?) {
+    fun printTransitions(state: State, name:String, transitions:Map<Char, State>, elseState: State?) {
         out.println("State ${name} (accepting=${state.isAccepting})")
         for ((ch, next) in transitions) { // todo next
             out.println("  '$ch' -> ${name}")
         }
         if (elseState != null)
             out.println("  else -> ${elseState::class.simpleName ?: "UnnamedState"}") //TODO ?? avoid using reflection outside of traverse method :/
+    }
+
+    fun printStateTree(
+        state: State = startState,
+        printedCount: MutableMap<State, Int> = mutableMapOf(),
+        indent: String = "\t",
+        maxCount : Int = 3
+    ) {
+        val count = printedCount.getOrDefault(state, 0)
+        if (count >= maxCount) return
+        printedCount[state] = count + 1
+
+        val name = state::class.simpleName ?: "UnnamedState"
+        println("$indent$name (accepting=${state.isAccepting})")
+        for ((ch, nextFn) in state.transitions) {
+            val nextState = nextFn()
+            val nextName = nextState::class.simpleName ?: "UnnamedState"
+            println("$indent  '$ch' -> $nextName")
+            printStateTree(nextState, printedCount, indent + "    ")
+        }
+        state.elseNext?.let { elseFn ->
+            val elseState = elseFn()
+            val elseName = elseState::class.simpleName ?: "UnnamedState"
+            println("$indent  else -> $elseName")
+            printStateTree(elseState, printedCount, indent + "    ")
+        }
     }
 
 

@@ -2,6 +2,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     kotlin("jvm")
+    //kotlin("multiplatform") version "2.2.20"
     id("org.jetbrains.compose")
     id("org.jetbrains.kotlin.plugin.compose")
 }
@@ -22,6 +23,7 @@ dependencies {
     // With compose.desktop.common you will also lose @Preview functionality
 
     implementation(compose.desktop.currentOs)
+    //implementation(compose.desktop.currentOs, compose.html.core)
     testImplementation(kotlin("test"))
     sourceSets {
             dependencies {
@@ -30,8 +32,11 @@ dependencies {
                 implementation(kotlin("reflect"))
 
 
+
             }
     }
+
+
 
 }
 
